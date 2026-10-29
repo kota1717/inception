@@ -1,0 +1,32 @@
+Dockerfile関連
+
+nginx
+
+&& rm -rf /var/lib/apt/lists/*
+「Docker イメージのサイズ（容量）を小さく軽量化するため」 です。
+apt-get update を実行すると、Debian は「どのパッケージがどこにあるか」という最新のパッケージリスト（目録データ）を
+ /var/lib/apt/lists/ の下に一時的にダウンロードします。
+apt-get install が終わった後、この目録データはコンテナ内では二度と使いません。
+消さずにそのままにしておくと、無駄なファイルがイメージの中に残り続け、イメージの容量が数兆〜数十MB単位で無駄に大きくなってしまいます。
+
+COPY ./nginx.conf /etc/nginx/sites-available/default
+apt install nginxで、/etc/nginx/nginx.confが自動的に２つの設定ファイルを読み込む
+
+1. /etc/nginx/conf.d/.*.conf (一般的な追加設定)
+2. /etc/nginx/sites-enabled/*　（有効化されたサイト設定）
+
+/etc/nginx/sites-available/default に初期設定ファイルが置かれ、/etc/nginx/sites-enabled/defaultへシンボリックリンクが貼られている
+
+# 自己証明書と秘密鍵を生成
+RUN openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+    -out /etc/nginx/ssl/inception.crt \
+    -keyout /etc/nginx/ssl/inception.key \
+    -subj "/C=JP/ST=Tokyo/L=Tokyo/O=42School/OU=42Tokyo/CN=hinahara.42.fr"
+
+-x509：自己証明書を作る -nodes:秘密鍵にパスワードをかけない（コンテナ起動時にパスワードを求められて止まるのを防ぐため）
+-out / -keyout: 証明書(.crt)と秘密鍵(.key)の保存先
+-subj: 証明書に書き込む名前や国などの情報
+
+
+nginx.conf
+listen [::]:443 ssl;　　[::]は、IPv6のすべてのIPアドレスを意味する。

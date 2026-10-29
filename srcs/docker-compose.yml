@@ -1,22 +1,8 @@
-version: '3'
 services:
-  web:
-    build: . // .のみでDockerfileを探して起動してくれる docker run my-node-app
-    container_name: my-node-app // コンテナに名前をつける
-    working_dir: /usr/src/app // コンテナに入ったときの最初の位置を設定できる docker exec -it my-node-app bashをするとこの位置になる
-    volumes:
-      - .:/usr/src/app // ローカルのディレクトリとコンテナのusr/src/appをマウントしていて、docker-expressにファイルが追加されたら、コンテナにも作成される
+  nginx:
+    build: requirements/nginx/.
+    container_name: inception_nginx
     ports:
-      - "3000:3000"  //-p 3000:3000
-    depends_on: // 起動するときの依存関係を書いていて、dbという名前のコンテナが起動してからこのコンテナは起動することが設定されている
-      - db
-db:
-  image: postgres:13 // 用意されているイメージを起動
-  container_name: postgres_db
-  environment: // postgresでは環境変数を与える必要がある
-    POSTGRES_PASSWORD: mysecretpassword
-  volumes:
-    - pgdata:/var/lib/postgresql/data // DBは、コンテナを停止してもデータは消えてほしくないので永続化させる
-
-volumes:
-  pgdata:
+      - "8443:443"
+    volumes:
+      - ./website-files:/var/www/html
