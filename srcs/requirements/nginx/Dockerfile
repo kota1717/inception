@@ -5,8 +5,8 @@ RUN apt-get update && apt-get install -y \
 		openssl \
 		&& rm -rf /var/lib/apt/lists/*
 
+# 自己証明書を発行する
 RUN mkdir -p /etc/nginx/ssl
-
 RUN openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
     -out /etc/nginx/ssl/inception.crt \
     -keyout /etc/nginx/ssl/inception.key \

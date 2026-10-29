@@ -6,3 +6,10 @@ services:
       - "8443:443"
     volumes:
       - ./website-files:/var/www/html
+    depends_on:
+      - wordpress
+  wordpress:
+    build: requirements/wordpress/.
+    container_name: wordpress
+    volumes:
+      - ./website-files:/var/www/html

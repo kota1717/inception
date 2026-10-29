@@ -30,3 +30,41 @@ RUN openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
 
 nginx.conf
 listen [::]:443 ssl;　　[::]は、IPv6のすべてのIPアドレスを意味する。
+
+location / {
+    try_files $uri $uri/ = 404;
+}
+
+リクエストされたファイルやディレクトリがサーバー上に存在しない場合に、404エラーを返す
+
+location ~ \.php$ {
+    include snippets/fastcgi-php.conf;
+    fastcgi_pass wordpress:9000;
+}
+
+~ 大文字、小文字を区別する正規表現  \ .を任意の一文字とする　＄文字列の終わりを意味する。
+
+include snippets/fastcgi-php.conf;
+PHPファイルをPHP-FPMへ正しく受け渡すための共通設定（スニペット）を読み込む記述
+すでにプロセスが起動しているとかがわかる。
+
+
+フォアグラウンド
+ホスト側の端末とコンテナのメインプロセスが接続され、標準出力やログがリアルタイムに
+画面に表示される実行方式
+
+コンテナ内では、PID１を終わらせないためにフォアグラウンド起動にしておく。
+コンテナの外では、ターミナルを自由に使えるようにバッググラウンド起動にする
+
+
+# PHP-FPM の実行に必要なソケットディレクトリを作成
+RUN mkdir -p /run/php
+
+UNIX ソケット（/run/php/php8.2-fpm.sock）や
+PID ファイル（/run/php/php8.2-fpm.pid）を /run/php/ の中に自動作成しようとします。
+
+UNIXソケット
+同じコンテナでNginxとPHPが動いているときに使うファイル形式
+
+PIDファイルとは
+サーバーやアプリケーションが現在動作している際、そのプロセスIDを記録しておくためのファイル
