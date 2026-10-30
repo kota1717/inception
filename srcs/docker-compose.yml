@@ -13,3 +13,27 @@ services:
     container_name: wordpress
     volumes:
       - ./website-files:/var/www/html
+  mariadb:
+    build: ./requirements/mariadb
+    container_name: mariadb
+    env_file:
+      - .env
+    secrets:
+      - db_password
+      - db_root_password
+    volumes:
+      - mariadb-data:/var/lib/mysql
+    networks:
+      - inception-network
+    restart: on-failure
+secrets:
+  db_password:
+    file: ./secrets/db_password.txt
+  db_root_password:
+    file: ./secrets/db_root_password.txt
+volumes:
+  mariadb-data:
+    driver: local
+networks:
+  inception-network:
+    driver: bridge
