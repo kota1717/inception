@@ -1,5 +1,6 @@
 services:
   nginx:
+    pull_policy: build
     build: requirements/nginx/.
     container_name: inception_nginx
     ports:
@@ -9,11 +10,13 @@ services:
     depends_on:
       - wordpress
   wordpress:
+    pull_policy: build
     build: requirements/wordpress/.
     container_name: wordpress
     volumes:
       - ./website-files:/var/www/html
   mariadb:
+    pull_policy: build
     build: ./requirements/mariadb
     container_name: mariadb
     env_file:
@@ -31,6 +34,11 @@ secrets:
     file: ./secrets/db_password.txt
   db_root_password:
     file: ./secrets/db_root_password.txt
+  wp_admin_password:
+    file: ./secrets/wp_admin_password.txt
+  wp_user_password:
+    file: ./secrets/wp_user_password.txt
+
 volumes:
   mariadb-data:
     driver: local

@@ -101,3 +101,12 @@ docker-compose.ymlでdepends-onを書いていても、MariaDBコンテナが立
 
 wordpressの展開先である /var/www/htmlディレクトリの所有者を
 webサーバー実行ユーザーに変更する処理をいれる。
+
+
+データベースのホスト
+wordpressコンテナがDockerの内部ネットワークの中でどのコンテナにMariaDBがいるかを特定するための名前
+
+DOMAIN_NAME
+ブラウザのアドレスバーに打ち込むwebサイトの住所
+
+
