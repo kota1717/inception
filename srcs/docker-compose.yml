@@ -4,7 +4,7 @@ services:
     build: requirements/nginx/.
     container_name: inception_nginx
     ports:
-      - "8443:443"
+      - "443:443"
     volumes:
       - ./website-files:/var/www/html
     networks:
