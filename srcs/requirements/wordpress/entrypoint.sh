@@ -1,8 +1,8 @@
 #!/bin/bash
 
 WP_DATABASE_PASSWORD=$(cat /run/secrets/db_password)
-WP_ADMIN_PASSWORD=$(cat /run/secrets/wordpress_admin_password)
-WP_USER_PASSWORD=$(cat /run/secrets/wordpress_user_password)
+WP_ADMIN_PASSWORD=$(cat /run/secrets/wp_admin_password)
+WP_USER_PASSWORD=$(cat /run/secrets/wp_user_password)
 
 # error script stop
 set -e
@@ -19,14 +19,14 @@ if [ ! -f wp-config.php ]; then
 	MAX_RETRIES=30
 	RETRY_COUNT=0
 
-	while ! mariadb -h"$WP_DATABASE_HOST" -u"WP_DATABASE_USER" -p"$WP_DATABASE_PASSWORD" -e "SELECT 1;" >/dev/null 2>&1; do
+	while ! mariadb -h"$WP_DATABASE_HOST" -u"$WP_DATABASE_USER" -p"$WP_DATABASE_PASSWORD" -e "SELECT 1;" >/dev/null 2>&1; do
 		RETRY_COUNT=$((RETRY_COUNT + 1))
 		if [ $RETRY_COUNT -ge $MAX_RETRIES ]; then
 			echo "Error: Could not connect to MariaDB within ${MAX_RETRIES} attempts. Exiting..."
 			exit 1
 		fi
 		echo "MariaDB is not ready yet... waiting (Attempt: ${RETRY_COUNT}/${MAX_RETRIES})"
-		sleep2
+		sleep 2
 	done
 	echo "MariaDB is ready!"
 
@@ -48,9 +48,9 @@ if [ ! -f wp-config.php ]; then
 	wp core install \
 		--url="$DOMAIN_NAME" \
 		--title="Inception Wordpress" \
-		--admin-user="$WP_ADMIN_USER" \
-		--admin-password="$WP_ADMIN_PASSWORD" \
-		--admin-email="$WP_ADMIN_EMAIL" \
+		--admin_user="$WP_ADMIN_USER" \
+		--admin_password="$WP_ADMIN_PASSWORD" \
+		--admin_email="$WP_ADMIN_EMAIL" \
 		--allow-root
 
 	# 5. 一般ユーザーの作成
