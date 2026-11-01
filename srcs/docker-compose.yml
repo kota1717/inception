@@ -22,7 +22,7 @@ services:
       - wp_admin_password
       - wp_user_password
     volumes:
-      - ./website-files:/var/www/html
+      - /home/ikota/data/wordpress:/var/www/html
     networks:
       - inception-network
     depends_on:
@@ -37,7 +37,7 @@ services:
       - db_password
       - db_root_password
     volumes:
-      - mariadb-data:/var/lib/mysql
+      - /home/ikota/data/mariadb:/var/lib/mysql
     networks:
       - inception-network
     restart: on-failure
