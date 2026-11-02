@@ -1,6 +1,7 @@
 services:
   nginx:
     pull_policy: build
+    image: nginx
     build: requirements/nginx/.
     container_name: inception_nginx
     ports:
@@ -13,6 +14,7 @@ services:
       - wordpress
   wordpress:
     pull_policy: build
+    image: wordpress
     build: requirements/wordpress/.
     container_name: inception_wordpress
     env_file:
@@ -29,6 +31,7 @@ services:
       - mariadb
   mariadb:
     pull_policy: build
+    image: mariadb
     build: ./requirements/mariadb
     container_name: inception_mariadb
     env_file:
