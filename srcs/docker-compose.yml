@@ -6,8 +6,6 @@ services:
     container_name: inception_nginx
     ports:
       - "443:443"
-    volumes:
-      - ./website-files:/var/www/html
     networks:
       - inception-network
     depends_on:
@@ -55,9 +53,6 @@ secrets:
   wp_user_password:
     file: ../secrets/wp_user_password.txt
 
-volumes:
-  mariadb-data:
-    driver: local
 networks:
   inception-network:
     driver: bridge
