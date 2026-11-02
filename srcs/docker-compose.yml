@@ -14,7 +14,7 @@ services:
   wordpress:
     pull_policy: build
     build: requirements/wordpress/.
-    container_name: wordpress
+    container_name: inception_wordpress
     env_file:
       - .env
     secrets:
@@ -30,7 +30,7 @@ services:
   mariadb:
     pull_policy: build
     build: ./requirements/mariadb
-    container_name: mariadb
+    container_name: inception_mariadb
     env_file:
       - .env
     secrets:
