@@ -60,7 +60,7 @@ if [ ! -f wp-config.php ]; then
 		"$WP_USER_EMAIL" \
 		--role=author \
 		--user_pass="$WP_USER_PASSWORD" \
-		--alow-root
+		--allow-root
 
 	echo "WordPress initial setup completed successfully."
 else
