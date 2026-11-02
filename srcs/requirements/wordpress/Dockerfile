@@ -10,6 +10,7 @@ RUN apt-get update && apt-get install -y  \
 		php8.2-xml \
 		php8.2-zip \
 		mariadb-client \
+		netcat-openbsd \
 		curl \
 		&& rm -rf /var/lib/apt/lists/*
 

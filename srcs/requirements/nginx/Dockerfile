@@ -3,6 +3,7 @@ FROM debian:bookworm
 RUN apt-get update && apt-get install -y \
 		nginx \
 		openssl \
+		netcat-openbsd \
 		&& rm -rf /var/lib/apt/lists/*
 
 # 自己証明書を発行する
