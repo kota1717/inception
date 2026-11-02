@@ -6,10 +6,10 @@ all:	up
 
 # @はコマンドを非表示にする
 up:	setup
-	@mkdir -p $(VOLUME)/mariadb
-	@mkdir -p $(VOLUME)/wordpress
-	@chmod 755 $(VOLUME)/mariadb
-	@chmod 755 $(VOLUME)/wordpress
+	@sudo mkdir -p $(VOLUME)/mariadb
+	@sudo mkdir -p $(VOLUME)/wordpress
+	@sudo chmod -R 755 $(VOLUME)/mariadb
+	@sudo chmod -R 755 $(VOLUME)/wordpress
 	@$(COMPOSE) up -d --build
 
 setup:
