@@ -52,8 +52,8 @@ clean:
 fclean: clean
 	@rm -f srcs/.env
 	@rm -rf secrets/
-	@rm -rf $(VOLUME)/mariadb
-	@rm -rf $(VOLUME)/wordpress
+	@sudo rm -rf $(VOLUME)/mariadb
+	@sudo rm -rf $(VOLUME)/wordpress
 	@docker system prune -a --volumes -f
 
 re: fclean up
