@@ -56,7 +56,7 @@ Replace `<login>` with your 42 user login name. Add the domain to your host/loca
   `https://<login>.42.fr/wp-admin` (or `https://127.0.0.1/wp-admin`)
 
 > **Note on SSL Warning:**
-> The site uses a self-signed TLS certificate. If your browser shows a security warning, expand **Advanced** and click **Proceed to <login>.42.fr (unsafe)** or type `thisisunsafe` directly into the Chrome error screen.
+> The site uses a self-signed TLS certificate. If your browser shows a security warning, expand **Advanced** and click **Proceed to <login>.42.fr (unsafe)** 
 
 ## 4. Locate and Manage Credentials & Secrets
 
