@@ -12,10 +12,3 @@ RUN chmod +x /usr/local/bin/entrypoint.sh
 RUN mkdir -p /run/mysqld && chown -R mysql:mysql /run/mysqld
 
 ENTRYPOINT ["entrypoint.sh"]
-
-# FROM: ベースイメージを指定する
-# WORKDIR: 作業ディレクトリを設定する
-# COPY: ローカルファイルをコンテナ内にコピーする
-# RUN: コマンドを実行する（パッケージのインストール）
-# CMD: コンテナが起動されたときに実行されるデフォルトのコマンドを指定
-# ENTRYPOINT: コンテナに引数を渡しても絶対に最初にコマンドやスクリプトを実行できる
