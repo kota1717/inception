@@ -12,6 +12,7 @@ services:
       - inception-network
     depends_on:
       - wordpress
+    restart: always
   wordpress:
     pull_policy: build
     image: wordpress
@@ -29,6 +30,7 @@ services:
       - inception-network
     depends_on:
       - mariadb
+    restart: always
   mariadb:
     pull_policy: build
     image: mariadb
@@ -43,7 +45,7 @@ services:
       - mariadb_data:/var/lib/mysql
     networks:
       - inception-network
-    restart: on-failure
+    restart: always
 
 secrets:
   db_password:
