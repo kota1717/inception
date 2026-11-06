@@ -1,6 +1,6 @@
 FROM debian:bookworm
 
-RUN apt-get update && apt-get install -y mariadb-server &&\
+RUN apt-get update && apt-get install -y mariadb-server \
 		net-tools \
 		rm -rf /var/lib/apt/lists/*
 # 外部からの接続を許可する設定に変更（デフォルトは 127.0.0.1 のみ許可）
