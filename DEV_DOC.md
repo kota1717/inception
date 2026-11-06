@@ -8,9 +8,9 @@ This document provides guidelines for developers to set up, build, manage, and i
 
 Ensure the host system (Linux / Debian) meets the following requirements:
 
-* **Docker Engine** (v20.10 or higher)
-* **Docker Compose** (v2.0 or higher)
-* **GNU Make**
+- **Docker Engine** (v20.10 or higher)
+- **Docker Compose** (v2.0 or higher)
+- **GNU Make**
 
 ### Configuration Files & Directory Structure
 
@@ -30,15 +30,15 @@ The repository follows a strict directory structure as mandated by the subject:
 └── srcs/
     ├── docker-compose.yml
     ├── .env
-		├── .env.example
+    ├── .env.example
     └── requirements/
         ├── mariadb/
         │   ├── Dockerfile
-				|		├── entrypoint.sh
+        |   ├── entrypoint.sh
         ├── nginx/
         │   ├── Dockerfile
         │   ├── nginx.conf
-				|   ├── entrypoint.sh
+        |   ├── entrypoint.sh
         └── wordpress/
             ├── Dockerfile
             ├── entrypoint.sh
@@ -78,30 +78,30 @@ All orchestration is managed through the root `Makefile`, which invokes `docker 
 
 ### Primary Commands
 
-* **Build and Start (Detached):**
+- **Build and Start (Detached):**
   ```bash
   make
   ```
   *(Creates data host directories, generates secrets if missing, builds image layers, and starts containers in the background.)*
 
-* **Force Rebuild:**
+- **Force Rebuild:**
   ```bash
   make re
   ```
   *(Stops running services, removes containers/images/volumes, and executes a clean build.)*
 
-* **Stop Containers (Preserve Data):**
+- **Stop Containers (Preserve Data):**
   ```bash
   make down
   ```
   *(Stops containers and removes network attachments, leaving volume directories and generated secrets intact.)*
 
-* **Clean Containers and Images:**
+- **Clean Containers and Images:**
   ```bash
   make clean
   ```
 
-* **Full Cleanup (Including Volumes and Data Directories):**
+- **Full Cleanup (Including Volumes and Data Directories):**
   ```bash
   make fclean
   ```
@@ -112,19 +112,19 @@ Developers can inspect and manage running resources using standard Docker tools:
 
 ### Container Operations
 
-* **View Active Containers:**
+- **View Active Containers:**
   ```bash
   docker ps
   ```
 
-* **View Real-Time Logs:**
+- **View Real-Time Logs:**
   ```bash
   docker logs -f inception_nginx
   docker logs -f inception_wordpress
   docker logs -f inception_mariadb
   ```
 
-* **Execute Interactive Shell Inside Containers:**
+- **Execute Interactive Shell Inside Containers:**
   ```bash
   docker exec -it inception_nginx sh
   docker exec -it inception_wordpress bash
@@ -133,7 +133,7 @@ Developers can inspect and manage running resources using standard Docker tools:
 
 ### Volume Operations
 
-* **Inspect Mounted Volumes:**
+- **Inspect Mounted Volumes:**
   ```bash
   docker volume ls
   docker volume inspect srcs_wordpress_data
@@ -164,3 +164,50 @@ To confirm data survives container destruction:
 2. Destroy containers using `make down` (or `docker compose down`).
 3. Re-launch the stack using `make`.
 4. Reload the site to confirm the post/comment remains intact on disk at `/home/<login>/data/`.
+
+## 5. Database Inspection & Management
+
+### Logging Into MariaDB Container
+
+To interact with the database directly, connect to the `inception_mariadb` container via `docker exec`:
+
+1. **Access container shell using root credentials:**
+   ```bash
+   docker exec -it inception_mariadb mariadb -u root -p
+   ```
+   *(Enter the root password defined in `srcs/secrets/db_root_password.txt` when prompted.)*
+
+2. **Access container shell using the WordPress database user:**
+   ```bash
+   docker exec -it inception_mariadb mariadb -u <MYSQL_USER> -p
+   ```
+   *(Enter the password defined in `srcs/secrets/db_password.txt` when prompted.)*
+
+### Verifying Database Content & Tables
+
+Run the following SQL queries inside the MariaDB prompt to verify that the database is properly initialized and not empty:
+
+```sql
+-- List available databases
+SHOW DATABASES;
+
+-- Select the WordPress database
+USE wordpress;
+
+-- Display generated WordPress tables (expecting ~12 tables such as wp_posts, wp_users)
+SHOW TABLES;
+
+-- Inspect configured site URL to confirm initialization
+SELECT option_name, option_value FROM wp_options WHERE option_name = 'siteurl';
+
+-- Exit MariaDB prompt
+EXIT;
+```
+
+### One-Line Non-Interactive Inspection
+
+For quick verification during evaluation without entering the interactive prompt:
+
+```bash
+docker exec -it inception_mariadb mariadb -u root -p"$(cat srcs/secrets/db_root_password.txt)" -e "USE wordpress; SHOW TABLES;"
+```
