@@ -7,9 +7,6 @@ WP_USER_PASSWORD=$(cat /run/secrets/wp_user_password)
 # error script stop
 set -e
 
-# Wordpressのディレクトリに移動
-cd /var/www/html
-
 # wp-config.phpが存在しない場合のみインストール処理を行う
 if [ ! -f wp-config.php ]; then
 	echo "Wordpress is not installed yet. Starting configuration..."
