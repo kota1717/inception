@@ -46,7 +46,7 @@ Bind mounts are a mechanism that directly maps a specific path on the host machi
 
 The primary difference from Docker volumes is the entity managing the host directories and files. With Docker volumes, Docker automatically creates and manages the directory in a secure area on the host (e.g., `/var/lib/docker/volumes/`). In contrast, bind mounts are user-managed; an error will occur if the specified path does not exist on the host OS.
 
-Bind Mounts の例：
+Bind Mounts's example：
 
 ```yaml
 services:
